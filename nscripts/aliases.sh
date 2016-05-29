@@ -12,5 +12,5 @@ alias cdls=". ${root}/cdls.sh"
 
 echo
 
-echo "Up the tag/version of latest commit: uptag <tag#>"
+echo "Up the tag/version of latest commit: uptag "
 alias uptag=". ${root}/version_up.sh"
