@@ -35,3 +35,4 @@ else
 	echo
 	echo "Done."
 fi
+#echo '0.1.2.-1' | egrep -o '[0-9]{1}\.' | egrep -o '^[0-9]'
