@@ -29,15 +29,15 @@ if [ $upThisTag = 'y' ]; then
 	read placeToUp
 	#placeToUp=3
 	echo "upping the tag..."
-	for i in `echo "$latestTag" | egrep -o '[0-9]{1}\.'`; do
-		digit=$(echo "$i" | egrep -o '[0-9]+')
+	for i in `echo "$latestTag" | egrep -o '[0-9]+\.'`; do
+		num=$(echo "$i" | egrep -o '[0-9]+')
 		if [ $count = $placeToUp ]; then
-			digit=$((digit+1))
+			num=$((num+1))
 		fi
 		if [ $count = 1 ]; then
-			uppedTag="$digit"
+			uppedTag="$num"
 		else 
-			uppedTag="${uppedTag}.${digit}"
+			uppedTag="${uppedTag}.${num}"
 		fi
 		count=$((count+1))
 	done
