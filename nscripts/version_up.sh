@@ -17,6 +17,8 @@ if [ $upThisTag = 'y' ]; then
 	echo
 	echo "latest commit id => $commit_id"
 
+	#echo "grabbing the latest tag and adding 1..."
+	#git tag -l --sort=-refname | [cat or something to grab only first line"
 	echo "upping the tag..."
 	git tag "$1" "$commit_id"
 	wasTagUpped=$?
