@@ -1,20 +1,32 @@
 #!/bin/bash
 
+#check if any tags are being used
+anyTags=$(git tag -l)
+if [ -z "$anyTags" ]; then
+	echo "no tags being used..."
+	echo "Use <git tag> for any commit, and after commiting again, run this script to up the latest tag to the latest commit."
+	return
+fi
 
 #get latest commit
-echo "grabbing the latest commit..."
+echo "grabbing latest commit..."
 latestLog="$(git log --pretty=oneline -n 1)"
+if [ -z "$latestLog" ]; then
+	echo "no previous commits... "
+	echo "Make sure you have a commit, have tagged the commit, and then have another untagged commit in order this script to up the latest tag and tag the latest commit."
+	return
+fi
 #commit_msg=$(echo "$latestLog" | egrep -o -v '[a-z0-p]{40}')
 #echo ">>> $commit_msg"
 echo "$latestLog"
 echo
 
-echo "Up this tag? [y/n] > "
+echo "Up tag to this commit? [y/n] > "
 read upThisTag
 if [ $upThisTag = 'y' ]; then
 
 	echo
-	echo "grabbing latest commit..."
+	echo "grabbing latest commit id..."
 	commit_id=$(echo "$latestLog" | egrep -o '[a-z0-9]{40}')
 	echo ">>> latest commit id => $commit_id"
 
