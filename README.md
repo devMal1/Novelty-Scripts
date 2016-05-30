@@ -2,7 +2,6 @@
 
 > Random/general scripts that I develop as I find convenient.
 
----
 
 ## Running *nscripts*
 - Make sure the user's permissions can execute script: `chmod u+x <nscript>`
