@@ -14,3 +14,8 @@ echo
 
 echo "Up the tag/version of latest commit: uptag "
 alias uptag=". ${root}/version_up.sh"
+
+echo
+
+echo "Remove emacs autosaved files: rmem "
+alias rmem=". ${root}/rmEmacsAutosaves.sh"
