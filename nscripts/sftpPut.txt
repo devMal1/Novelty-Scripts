@@ -1,0 +1,2 @@
+cd scripts
+put /home/malik-win/temp/hi.txt
