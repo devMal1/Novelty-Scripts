@@ -10,7 +10,7 @@ TIME_PATTERN="[0-9]{1,2}:{1}[0-9]{2}"
 #Helper functions
 function getLastModifiedTime {
 	local _file=$1
-	echo "$( ls -l $_file | egrep -o "$TIME_PATTERN" )"
+	echo "$( ls -l $_file | egrep -o $TIME_PATTERN )"
 }
 function updateLastModifiedTime {
 	local _file=$1
@@ -18,13 +18,13 @@ function updateLastModifiedTime {
 	local _newTime=$3
 	local _listOfFiles=$4
 	
-	local _searchFor="$_file $oldTime"
-	local _replaceWith="$_file $newTime"
+	local _searchFor="$_file $_oldTime"
+	local _replaceWith="$_file $_newTime"
 	local _temp="temp.txt"
 	touch $_temp
-	sed "s|$_searchFor|$_replaceWith|" $_listOfFiles >$_temp
-	#rm $_listOfFiles
-	#mv $_temp $_listOfFiles
+	sed "s|$_searchFor|$_replaceWith|" <monitoring.txt >temp.txt
+	#rm monitoring.txt #$_listOfFiles
+	#mv temp.txt monitoring.txt #$_temp $_listOfFiles
 }
 function queryData {
 	local _file=$1
@@ -46,7 +46,8 @@ function getFilesInfoFromUser {
 	echo "Enter full paths (do not use '~') for the files you would like to autoput (one file path per line)"
 	echo "For each file you will be prompted for the full path remote directory for that file (where the file will be put on the server)"
 	echo "Type 'done' when finished."
-	echo "" > $_listOfFiles #clear list
+	rm $_listOfFiles
+	touch $_listOfFiles
 	local _isDone=0
 	while [ $_isDone = 0 ]; do
 		local _file=""
