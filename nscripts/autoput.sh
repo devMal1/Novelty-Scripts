@@ -31,9 +31,9 @@ function queryData {
 	local _column=$2
 	local _listOfFiles=$3
 
-	if [ $_column = 2 ]; then
+	if [ $_column = $GET_ORIGINAL_TIME ]; then
 		echo "$( awk -v f=$_file '$1=$f {print $2}' $_listOfFiles )"
-	elif [ $_column = 3 ]; then
+	elif [ $_column = $GET_REMOTE_DIR ]; then
 		echo "$( awk -v f=$_file '$1=$f {print $3}' $_listOfFiles )"
 	else
 		echo $CHECK_CODE
@@ -86,12 +86,9 @@ function getSFTPInfoFromUser {
 function hasFileChanged {
 	local _file=$1
 	local _listOfFiles=$2
-	local _TIME=2
 
 	local _originalTimeLastModified="$( queryData $_file $GET_ORIGINAL_TIME $_listOfFiles )"
 	local _timeLastModified="$( getLastModifiedTime $_file )"
-	echo "DEBUG::: $_originalTimeLastModified :: $_timeLastModified"
-	echo "something!!!"
 	if [ "$_originalTimeLastModified" = "$_timeLastModified" ]; then
 		echo $CHECK_CODE
 	else
@@ -132,7 +129,7 @@ function main {
 		#Monitor files
 		for file in $( awk '{print $1}' $_listOfFiles ); do
 			local _changed=$( hasFileChanged "$file" "$_listOfFiles" )
-			if [ "$_changed" = $CHECK_CODE ]; then
+			if [ "$_changed" != $CHECK_CODE ]; then
 				echo "$file changed"
 				#local _remoteDir=$( queryData $file $GET_REMOTE_DIR $_listOfFiles )
 				##sftpPut $file $_remoteDir $_user
