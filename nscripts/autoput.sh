@@ -17,7 +17,7 @@ function updateLastModifiedTime {
 	local _oldTime=$2
 	local _newTime=$3
 	local _listOfFiles=$4
-	
+
 	local _searchFor="$_file $_oldTime"
 	local _replaceWith="$_file $_newTime"
 	local _temp="temp.txt"
@@ -62,7 +62,7 @@ function getFilesInfoFromUser {
 				local _timeLastModified="$( getLastModifiedTime $_file )"
 				echo "$_file  $_timeLastModified $_remoteDir" >> $_listOfFiles
 				echo "$_file added."
-			else 
+			else
 				echo "WARNING: File does not exist, ignoring file (make sure using beginning '/')"
 			fi
 		fi
@@ -70,15 +70,15 @@ function getFilesInfoFromUser {
 }
 function getSFTPInfoFromUser {
 	local _user=$1
-	
+
 	echo "Enter host name for remote server:"
 	local _server=""
 	read _server
-	
+
 	echo "Enter user name for ${server}:"
 	local _username=""
 	read _username
-	
+
 	echo "${_username}@${_server}" > $_user
 }
 
@@ -88,7 +88,7 @@ function hasFileChanged {
 	local _listOfFiles=$2
 	local _TIME=2
 
-	local _originalTimeLastModified="$( queryData $_file $GET_ORIGINAL_TIME $_listOfFiles )" 
+	local _originalTimeLastModified="$( queryData $_file $GET_ORIGINAL_TIME $_listOfFiles )"
 	local _timeLastModified="$( getLastModifiedTime $_file )"
 	echo "DEBUG::: $_originalTimeLastModified :: $_timeLastModified"
 	echo "something!!!"
@@ -105,7 +105,7 @@ function sftpPut {
 	local _file=$1
 	local _remoteDir=$2
 	local _user="$3"
-	
+
 	local _sftPutFile="sftpPut.txt"
 	echo "cd $_remoteDir" > $_sftPutFile
 	echo "put $_file" >> $_sftPutFile
@@ -115,7 +115,7 @@ function sftpPut {
 
 
 #Main
-function monitorFiles {
+function main {
 	local _user=".user"
 	local _listOfFiles="monitoring.txt"
 
@@ -142,7 +142,7 @@ function monitorFiles {
 }
 
 #Run Main
-monitorFiles
+main
 
 
 #reference to add to the readme.. ssh keys
