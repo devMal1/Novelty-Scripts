@@ -20,11 +20,8 @@ function updateLastModifiedTime {
 
 	local _searchFor="$_file $_oldTime"
 	local _replaceWith="$_file $_newTime"
-	local _temp="temp.txt"
-	touch $_temp
-	sed "s|$_searchFor|$_replaceWith|" <monitoring.txt >temp.txt
-	#rm monitoring.txt #$_listOfFiles
-	#mv temp.txt monitoring.txt #$_temp $_listOfFiles
+
+	sed -i "s|${_searchFor}|${_replaceWith}|" "$_listOfFiles"
 }
 function queryData {
 	local _file=$1
@@ -60,7 +57,7 @@ function getFilesInfoFromUser {
 				local _remoteDir=""
 				read _remoteDir
 				local _timeLastModified="$( getLastModifiedTime $_file )"
-				echo "$_file  $_timeLastModified $_remoteDir" >> $_listOfFiles
+				echo "$_file $_timeLastModified $_remoteDir" >> $_listOfFiles
 				echo "$_file added."
 			else
 				echo "WARNING: File does not exist, ignoring file (make sure using beginning '/')"
@@ -92,7 +89,7 @@ function hasFileChanged {
 	if [ "$_originalTimeLastModified" = "$_timeLastModified" ]; then
 		echo $CHECK_CODE
 	else
-		updateLastModifiedTime $_file $_originalTimeLastModifed $_timeLastModified $_listOfFiles
+		updateLastModifiedTime $_file $_originalTimeLastModified $_timeLastModified $_listOfFiles
 		echo "$_timeLastModified"
 	fi
 }
