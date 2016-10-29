@@ -72,7 +72,7 @@ function getSFTPInfoFromUser {
 	local _server=""
 	read _server
 
-	echo "Enter user name for ${server}:"
+	echo "Enter user name for ${_server}:"
 	local _username=""
 	read _username
 
@@ -100,11 +100,11 @@ function sftpPut {
 	local _remoteDir=$2
 	local _user="$3"
 
-	local _sftPutFile="sftpPut.txt"
-	echo "cd $_remoteDir" > $_sftPutFile
-	echo "put $_file" >> $_sftPutFile
+	local _sftpPutFile="sftpPut.txt"
+	echo "cd $_remoteDir" > $_sftpPutFile
+	echo "put $_file" >> $_sftpPutFile
 	local _userAtHost="$( cat $_user )"
-	sftp -b "$_sftpPutFile" "$userAtHost"
+	sftp -b "$_sftpPutFile" "$_userAtHost"
 }
 
 
@@ -114,13 +114,14 @@ function main {
 	local _listOfFiles="monitoring.txt"
 
 	#check if $user already exists
-	###getSFTPInfoFromUser $_user
+	getSFTPInfoFromUser $_user
 
 	#check if user wants to use previous files.. print out files then ask
 	getFilesInfoFromUser $_listOfFiles
 
 	echo "Monitoring the files..."
 	echo "To stop the program (if not running in background) hit ctrl-c"
+	#see about allowing user to quit gracefully
 	local _stop=0
 	while [ $_stop = 0 ]; do
 		#Monitor files
@@ -128,8 +129,8 @@ function main {
 			local _changed=$( hasFileChanged "$file" "$_listOfFiles" )
 			if [ "$_changed" != $CHECK_CODE ]; then
 				echo "$file changed"
-				#local _remoteDir=$( queryData $file $GET_REMOTE_DIR $_listOfFiles )
-				##sftpPut $file $_remoteDir $_user
+				local _remoteDir=$( queryData $file $GET_REMOTE_DIR $_listOfFiles )
+				sftpPut $file $_remoteDir $_user
 			fi
 		done
 	done
