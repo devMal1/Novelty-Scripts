@@ -29,9 +29,9 @@ function queryData {
 	local _listOfFiles=$3
 
 	if [ $_column = $GET_ORIGINAL_TIME ]; then
-		echo "$( awk -v f=$_file '$1=$f {print $2}' $_listOfFiles )"
+		echo "$( awk -v f=$_file '$1==f {print $2}' $_listOfFiles )"
 	elif [ $_column = $GET_REMOTE_DIR ]; then
-		echo "$( awk -v f=$_file '$1=$f {print $3}' $_listOfFiles )"
+		echo "$( awk -v f=$_file '$1==f {print $3}' $_listOfFiles )"
 	else
 		echo $CHECK_CODE
 	fi
@@ -68,11 +68,11 @@ function getFilesInfoFromUser {
 function getSFTPInfoFromUser {
 	local _user=$1
 
-	echo "Enter host name for remote server:"
+	echo -n "Enter host name for remote server: "
 	local _server=""
 	read _server
 
-	echo "Enter user name for ${_server}:"
+	echo -n "Enter username for ${_server}: "
 	local _username=""
 	read _username
 
