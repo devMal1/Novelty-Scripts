@@ -40,11 +40,9 @@ function queryData {
 #Setup (get file paths from user)
 function getFilesInfoFromUser {
 	local _listOfFiles=$1
-	echo "Enter full paths (do not use '~') for the files you would like to autoput (one file path per line)"
-	echo "For each file you will be prompted for the full path remote directory for that file (where the file will be put on the server)"
+	echo "Enter absolute (do not use '~') or relative paths for the files you would like to autoput (one file path per line)"
+	echo "For each file you will be prompted for the remote directory path for that file (where the file will be put on the server)"
 	echo "Type 'done' when finished."
-	rm $_listOfFiles
-	touch $_listOfFiles
 	local _isDone=0
 	while [ $_isDone = 0 ]; do
 		local _file=""
@@ -60,7 +58,7 @@ function getFilesInfoFromUser {
 				echo "$_file $_timeLastModified $_remoteDir" >> $_listOfFiles
 				echo "$_file added."
 			else
-				echo "WARNING: File does not exist, ignoring file (make sure using beginning '/')"
+				echo "WARNING: File does not exist, ignoring file"
 			fi
 		fi
 	done
@@ -117,7 +115,27 @@ function main {
 	getSFTPInfoFromUser $_user
 
 	#check if user wants to use previous files.. print out files then ask
-	getFilesInfoFromUser $_listOfFiles
+	local _usePrevFiles=0
+	if [ -e $_listOfFiles ]; then
+		if [ -s $_listOfFiles ]; then
+			echo "File(s) from last time:"
+			awk '{print $1}' $_listOfFiles
+			echo -n "...reuse [yes/no]? "
+			local _reuse=""
+			read _reuse
+			if [ $_reuse = "yes" ]; then
+				_usePrevFiles=1
+			else
+				rm $_listOfFiles
+				touch $_listOfFiles
+			fi
+		fi
+	else
+		touch $_listOfFiles
+	fi
+	if [ $_usePrevFiles = 0 ]; then
+		getFilesInfoFromUser $_listOfFiles
+	fi
 
 	echo "Monitoring the files..."
 	echo "To stop the program (if not running in background) hit ctrl-c"
