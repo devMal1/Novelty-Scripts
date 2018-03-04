@@ -13,4 +13,4 @@ something like that) then it must be compiled and installed:
     3. make
     4. make install
     5. make clean (this is optional)
-
+(steps gathered from here: https://github.com/jakedouglas/exuberant-ctags/blob/master/INSTALL)
