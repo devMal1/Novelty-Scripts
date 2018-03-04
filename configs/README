@@ -1,0 +1,16 @@
+To download the Vundle vim package manager:
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+To install the vundle packages:
+    1. Open any file (new or prexisting) in vim
+    2. type :PluginInstall
+    3. Wait for the packagaes to install and then close the file
+
+NOTE: When using the tagbar if you get a message stating that exuberant tags cannot be found (or
+something like that) then it must be compiled and installed:
+    1. cd ~/.vim/bundle/exuberant-ctags
+    2. ./configure
+    3. make
+    4. make install
+    5. make clean (this is optional)
+
